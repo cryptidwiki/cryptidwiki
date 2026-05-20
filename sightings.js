@@ -26,7 +26,7 @@ var sightings = [
     location: "Chicago, Illinois, USA",
     context: "Witnessed a large winged figure hovering near the top of the Willis Tower at approximately 11:45pm. It did not move for several minutes before ascending vertically and disappearing. Three other people on the street saw it. No one had a good enough camera. The eyes were red and visible from at least 200 feet below.",
     reporter: "anonymous_witness_4471",
-    image: "/cryptidwiki/images/mothman-test.png"
+    image: "/images/mothman-test.png"
   },
   {
     id: 2,
@@ -66,7 +66,7 @@ var sightings = [
     location: "Kenora, Ontario, Canada",
     context: "Found tracks in the snow near the lake that started as wolf prints and became something else entirely — bipedal, each print nearly three feet across. The tracks went for about a mile then stopped at the ice edge. My dog refused to leave the truck the entire time. Temperature dropped about 15 degrees as we followed the trail.",
     reporter: "northern_ontario_hunter",
-    image: "/cryptidwiki/images/footprints.png"
+    image: "/images/footprints.png"
   },
   {
     id: 6,
