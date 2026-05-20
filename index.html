@@ -247,12 +247,13 @@ body::before {
 .fr-cta-btn:hover { background: rgba(192,57,43,0.2); }
 
 @media (max-width: 768px) {
+  /* FIELD REPORTS */
   .field-reports-section { padding: 2rem 0.75rem; }
   .fr-title { font-size: 22px; }
   .fr-grid { grid-template-columns: 1fr; }
   .fr-cta-inner { flex-direction: column; text-align: center; }
   .fr-submit-btn { width: 100%; text-align: center; }
-}
+
   /* HEADER */
   .header-top { display: none; }
   .header-stats { display: none; }
@@ -262,7 +263,6 @@ body::before {
   .logo-sub { display: none; }
   .header-search { max-width: 100%; flex: 1; }
   .header-search input { font-size: 11px; padding: 7px 10px 7px 28px; }
-  .header-stats { display: none; }
 
   /* HERO */
   .hero { padding: 1.5rem 1rem; }
@@ -271,16 +271,9 @@ body::before {
   .hero-desc { font-size: 11px; }
 
   /* CONTROLS BAR */
-  .controls-bar {
-    top: 58px;
-    padding: 0.6rem 0.75rem;
-    gap: 0.5rem;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .controls-bar { top: 58px; padding: 0.6rem 0.75rem; gap: 0.5rem; flex-direction: column; align-items: flex-start; }
   .controls-label { display: none; }
-  .controls-bar > div:first-of-type { width: 100%; justify-content: space-between; }
-  .nav-tabs-wrap { width: 100%; justify-content: space-between; }
+  .nav-tabs-wrap { width: 100%; }
   .nav-tab { flex: 1; text-align: center; padding: 5px 2px; font-size: 8px; letter-spacing: 0.05em; }
   .filter-pills-wrap { width: 100%; overflow-x: auto; padding-bottom: 4px; }
   .pill { font-size: 9px; padding: 4px 9px; white-space: nowrap; }
@@ -314,15 +307,7 @@ body::before {
 
   /* DETAIL PANEL */
   .overlay { align-items: flex-end; }
-  .detail-panel {
-    width: 100vw;
-    height: 92vh;
-    border-left: none;
-    border-top: 1px solid var(--border2);
-    border-radius: 12px 12px 0 0;
-    animation: slideUp 0.25s ease;
-  }
-  @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+  .detail-panel { width: 100vw; height: 92vh; border-left: none; border-top: 1px solid var(--border2); border-radius: 12px 12px 0 0; animation: slideUp 0.25s ease; }
   .detail-name { font-size: 26px; }
   .detail-emoji { font-size: 40px; }
   .detail-meters { grid-template-columns: 1fr; }
@@ -332,6 +317,8 @@ body::before {
   /* FOOTER */
   .site-footer { flex-direction: column; align-items: center; text-align: center; padding: 1rem; }
 }
+
+@keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
 </style>
 </head>
 <body>
