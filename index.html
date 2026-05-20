@@ -203,15 +203,83 @@ body::before {
 /* EMPTY */
 .empty-state { text-align: center; padding: 4rem 2rem; color: rgba(240,232,208,0.28); font-size: 12px; grid-column: 1/-1; letter-spacing: 0.1em; }
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
+  /* HEADER */
+  .header-top { display: none; }
   .header-stats { display: none; }
-  .header-main { padding: 0.8rem 1rem; }
-  .controls-bar { top: 78px; padding: 0.7rem 1rem; }
-  .main-content { padding: 1rem; }
-  .list-header, .list-row { grid-template-columns: 38px 1fr 80px 60px; }
-  .list-header > *:nth-child(3), .list-row > *:nth-child(3),
-  .list-header > *:nth-child(5), .list-row > *:nth-child(5),
-  .list-header > *:nth-child(6), .list-row > *:nth-child(6) { display: none; }
+  .header-main { padding: 0.75rem 1rem; gap: 0.75rem; flex-wrap: nowrap; }
+  .logo-classified { display: none; }
+  .logo-title { font-size: 20px; }
+  .logo-sub { display: none; }
+  .header-search { max-width: 100%; flex: 1; }
+  .header-search input { font-size: 11px; padding: 7px 10px 7px 28px; }
+
+  /* HERO */
+  .hero { padding: 1.5rem 1rem; }
+  .hero-tag { font-size: 8px; }
+  .hero-title { font-size: 22px; }
+  .hero-desc { font-size: 11px; }
+
+  /* CONTROLS BAR */
+  .controls-bar {
+    top: 58px;
+    padding: 0.6rem 0.75rem;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .controls-label { display: none; }
+  .controls-bar > div:first-of-type { width: 100%; justify-content: space-between; }
+  .nav-tab { flex: 1; text-align: center; padding: 6px 4px; font-size: 9px; }
+  .filter-pills-wrap { width: 100%; overflow-x: auto; padding-bottom: 4px; }
+  .pill { font-size: 9px; padding: 4px 9px; white-space: nowrap; }
+  .sort-select { width: 100%; margin-left: 0; font-size: 10px; padding: 5px 8px; }
+
+  /* MAIN */
+  .main-content { padding: 0.75rem; }
+
+  /* GRID */
+  .creatures-grid { grid-template-columns: 1fr 1fr; gap: 1px; }
+  .creature-card { padding: 1rem; }
+  .card-name { font-size: 15px; }
+  .card-excerpt { -webkit-line-clamp: 2; }
+  .card-stamp { display: none; }
+
+  /* LIST */
+  .list-header, .list-row { grid-template-columns: 32px 1fr 70px; gap: 0.5rem; padding: 0.6rem 0.75rem; }
+  .list-header > *:nth-child(n+4), .list-row > *:nth-child(n+4) { display: none; }
+  .list-name { font-size: 13px; }
+
+  /* MAP */
+  .map-body { height: 220px; }
+  .map-hint { display: none; }
+  .map-title { font-size: 11px; }
+  .pin-label { display: none; }
+
+  /* RANKINGS */
+  .rankings-section.active { grid-template-columns: 1fr; gap: 1rem; }
+  .rank-name { font-size: 13px; }
+  .rank-val { font-size: 15px; }
+
+  /* DETAIL PANEL */
+  .overlay { align-items: flex-end; }
+  .detail-panel {
+    width: 100vw;
+    height: 92vh;
+    border-left: none;
+    border-top: 1px solid var(--border2);
+    border-radius: 12px 12px 0 0;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+  .detail-name { font-size: 26px; }
+  .detail-emoji { font-size: 40px; }
+  .detail-meters { grid-template-columns: 1fr; }
+  .detail-body { padding: 1rem; }
+  .detail-banner { padding: 1.25rem 1rem 1rem; }
+
+  /* FOOTER */
+  .site-footer { flex-direction: column; align-items: center; text-align: center; padding: 1rem; }
 }
 </style>
 </head>
@@ -268,7 +336,7 @@ body::before {
     <button class="nav-tab" id="tab-rankings">RANKINGS</button>
   </div>
   <span class="controls-label" style="margin-left:0.75rem">FILTER //</span>
-  <div style="display:flex;gap:5px;flex-wrap:wrap;">
+  <div class="filter-pills-wrap" style="display:flex;gap:5px;flex-wrap:wrap;">
     <button class="pill active" data-filter="all">ALL</button>
     <button class="pill" data-filter="cryptid">CRYPTID</button>
     <button class="pill" data-filter="spirit">SPIRIT</button>
