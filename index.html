@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptidWiki — Classified Paranormal Field Database</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Oswald:wght@300;400;500;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a08;
+  --bg2: #111109;
+  --bg3: #161612;
+  --paper: #f0e8d0;
+  --red: #c0392b;
+  --red2: #e74c3c;
+  --amber: #d4a017;
+  --mono: 'Share Tech Mono', monospace;
+  --display: 'Oswald', sans-serif;
+  --serif: 'IM Fell English', serif;
+  --border: rgba(240,232,208,0.1);
+  --border2: rgba(240,232,208,0.22);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--paper);
+  font-family: var(--mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.13) 2px, rgba(0,0,0,0.13) 4px);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.25;
+}
+
+/* HEADER */
+.site-header { border-bottom: 1px solid var(--border2); background: var(--bg2); position: sticky; top: 0; z-index: 100; }
+.header-top { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 10px; color: rgba(240,232,208,0.35); letter-spacing: 0.12em; }
+.blink { animation: blink 1s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+.header-main { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.logo-classified { font-size: 9px; letter-spacing: 0.3em; color: var(--red); margin-bottom: 2px; }
+.logo-title { font-family: var(--display); font-size: 26px; font-weight: 600; letter-spacing: 0.05em; }
+.logo-title span { color: var(--red); }
+.logo-sub { font-size: 9px; letter-spacing: 0.18em; color: rgba(240,232,208,0.35); margin-top: 2px; }
+.header-search { flex: 1; max-width: 420px; position: relative; }
+.header-search input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); color: var(--paper); font-family: var(--mono); font-size: 12px; padding: 8px 12px 8px 34px; outline: none; letter-spacing: 0.04em; }
+.header-search input::placeholder { color: rgba(240,232,208,0.28); }
+.header-search input:focus { border-color: var(--red); }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgba(240,232,208,0.35); font-size: 13px; pointer-events: none; }
+.header-stats { display: flex; gap: 1.5rem; margin-left: auto; }
+.stat-num { font-family: var(--display); font-size: 20px; font-weight: 500; color: var(--amber); line-height: 1; }
+.stat-label { font-size: 9px; letter-spacing: 0.12em; color: rgba(240,232,208,0.35); margin-top: 2px; }
+
+/* HERO */
+.hero { border-bottom: 1px solid var(--border); padding: 2.5rem 1.5rem; background: radial-gradient(ellipse at 50% 120%, rgba(192,57,43,0.07) 0%, transparent 65%); }
+.hero-tag { display: inline-block; font-size: 9px; letter-spacing: 0.28em; color: var(--red); border: 1px solid var(--red); padding: 3px 10px; margin-bottom: 0.9rem; }
+.hero-title { font-family: var(--display); font-size: clamp(28px, 4.5vw, 52px); font-weight: 300; line-height: 1.1; margin-bottom: 0.8rem; }
+.hero-title strong { font-weight: 600; color: var(--red); display: block; }
+.hero-desc { font-size: 12px; line-height: 1.8; color: rgba(240,232,208,0.55); max-width: 480px; }
+
+/* CONTROLS */
+.controls-bar { padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; background: var(--bg2); position: sticky; top: 91px; z-index: 90; }
+.controls-label { font-size: 9px; letter-spacing: 0.18em; color: rgba(240,232,208,0.3); white-space: nowrap; }
+.nav-tab { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 12px; border: 1px solid transparent; cursor: pointer; background: transparent; color: rgba(240,232,208,0.42); font-family: var(--mono); transition: all 0.12s; }
+.nav-tab:hover { color: var(--paper); border-color: var(--border2); }
+.nav-tab.active { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.09); }
+.pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; padding: 4px 11px; border: 1px solid var(--border2); color: rgba(240,232,208,0.45); background: transparent; cursor: pointer; transition: all 0.12s; text-transform: uppercase; }
+.pill:hover { border-color: var(--paper); color: var(--paper); }
+.pill.active { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.09); }
+.sort-select { margin-left: auto; background: var(--bg3); border: 1px solid var(--border2); color: rgba(240,232,208,0.6); font-family: var(--mono); font-size: 10px; padding: 4px 10px; cursor: pointer; outline: none; }
+.sort-select option { background: #1a1a14; }
+
+/* MAIN */
+.main-content { padding: 1.5rem; }
+
+/* GRID */
+.creatures-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1px; background: var(--border); }
+.creature-card { background: var(--bg2); padding: 1.4rem; cursor: pointer; position: relative; overflow: hidden; transition: background 0.13s; border: 1px solid transparent; }
+.creature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform 0.18s; }
+.creature-card:hover { background: var(--bg3); border-color: var(--border2); }
+.creature-card:hover::before { transform: scaleX(1); }
+.card-file-num { font-size: 9px; letter-spacing: 0.18em; color: rgba(240,232,208,0.22); margin-bottom: 0.7rem; }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.7rem; gap: 1rem; }
+.card-emoji { font-size: 30px; line-height: 1; }
+.card-threat-badge { font-size: 9px; letter-spacing: 0.13em; padding: 3px 7px; border: 1px solid; font-family: var(--mono); flex-shrink: 0; }
+.threat-critical { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.1); }
+.threat-high { border-color: #e67e22; color: #e67e22; background: rgba(230,126,34,0.1); }
+.threat-moderate { border-color: var(--amber); color: var(--amber); background: rgba(212,160,23,0.1); }
+.threat-low { border-color: #27ae60; color: #27ae60; background: rgba(39,174,96,0.1); }
+.card-name { font-family: var(--display); font-size: 19px; font-weight: 500; letter-spacing: 0.04em; margin-bottom: 3px; line-height: 1.1; }
+.card-aka { font-size: 10px; color: rgba(240,232,208,0.38); letter-spacing: 0.04em; font-style: italic; margin-bottom: 7px; }
+.card-origin { font-size: 10px; color: rgba(240,232,208,0.48); margin-bottom: 0.9rem; }
+.card-excerpt { font-size: 11px; line-height: 1.7; color: rgba(240,232,208,0.5); margin-bottom: 0.9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.ctag { font-size: 9px; letter-spacing: 0.12em; padding: 2px 7px; border: 1px solid; text-transform: uppercase; }
+.ctag-cryptid { border-color: rgba(212,160,23,0.5); color: var(--amber); }
+.ctag-spirit { border-color: rgba(46,204,113,0.4); color: #2ecc71; }
+.ctag-beast { border-color: rgba(231,76,60,0.5); color: var(--red2); }
+.ctag-demon { border-color: rgba(155,89,182,0.5); color: #9b59b6; }
+.ctag-humanoid { border-color: rgba(52,152,219,0.5); color: #3498db; }
+.ctag-aquatic { border-color: rgba(26,188,156,0.5); color: #1abc9c; }
+.ctag-folklore { border-color: rgba(240,180,50,0.4); color: #f0b432; }
+.card-stamp { position: absolute; bottom: 0.9rem; right: 0.9rem; font-family: var(--display); font-size: 10px; letter-spacing: 0.18em; color: rgba(192,57,43,0.18); border: 2px solid rgba(192,57,43,0.13); padding: 2px 7px; transform: rotate(-8deg); pointer-events: none; }
+.creature-card { animation: fadeUp 0.25s ease both; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* LIST */
+.creatures-list { display: none; }
+.list-header { display: grid; grid-template-columns: 50px 1fr 180px 110px 90px 80px; gap: 1rem; padding: 0.55rem 1rem; border-bottom: 1px solid var(--border2); font-size: 9px; letter-spacing: 0.18em; color: rgba(240,232,208,0.3); text-transform: uppercase; }
+.list-row { display: grid; grid-template-columns: 50px 1fr 180px 110px 90px 80px; gap: 1rem; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; align-items: center; }
+.list-row:hover { background: var(--bg3); }
+.list-emoji { font-size: 20px; }
+.list-name { font-family: var(--display); font-size: 15px; font-weight: 400; letter-spacing: 0.03em; }
+.list-aka { font-size: 10px; color: rgba(240,232,208,0.33); font-style: italic; }
+.list-origin { font-size: 10px; color: rgba(240,232,208,0.48); }
+.list-bar { height: 3px; background: rgba(240,232,208,0.08); position: relative; flex: 1; }
+.list-bar-fill { height: 100%; position: absolute; left: 0; top: 0; }
+.list-rarity { font-size: 10px; color: rgba(240,232,208,0.45); letter-spacing: 0.04em; }
+
+/* MAP */
+.map-section { display: none; }
+.map-container { border: 1px solid var(--border2); background: var(--bg3); }
+.map-header { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; }
+.map-title { font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; font-weight: 500; color: var(--amber); }
+.map-hint { font-size: 10px; color: rgba(240,232,208,0.3); }
+.map-body { position: relative; height: 360px; background: #0c1018; overflow: hidden; }
+.map-svg { width: 100%; height: 100%; }
+.map-pins { position: absolute; inset: 0; pointer-events: none; }
+.pin { position: absolute; transform: translate(-50%,-50%); cursor: pointer; pointer-events: all; }
+.pin-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--red); border: 2px solid rgba(240,232,208,0.75); animation: ppulse 2.2s ease-in-out infinite; transition: transform 0.13s; position: relative; }
+.pin:hover .pin-dot { transform: scale(1.5); }
+.pin-dot::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--red); opacity: 0.35; animation: ripple 2.2s ease-out infinite; }
+@keyframes ppulse { 0%,100%{opacity:1;} 50%{opacity:0.65;} }
+@keyframes ripple { 0%{transform:scale(1);opacity:0.35;} 100%{transform:scale(2.8);opacity:0;} }
+.pin-label { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 9px; font-family: var(--mono); color: var(--paper); white-space: nowrap; background: rgba(10,10,8,0.88); padding: 2px 6px; border: 1px solid var(--border2); opacity: 0; transition: opacity 0.13s; pointer-events: none; }
+.pin:hover .pin-label { opacity: 1; }
+
+/* RANKINGS */
+.rankings-section { display: none; gap: 1.5rem; }
+.ranking-panel { border: 1px solid var(--border2); background: var(--bg2); }
+.ranking-header { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.ranking-title { font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; font-weight: 500; }
+.ranking-title.danger { color: var(--red); }
+.ranking-title.rarity { color: var(--amber); }
+.ranking-row { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.9rem; cursor: pointer; transition: background 0.1s; }
+.ranking-row:hover { background: var(--bg3); }
+.ranking-row:last-child { border-bottom: none; }
+.rank-num { font-family: var(--display); font-size: 17px; font-weight: 600; min-width: 26px; color: rgba(240,232,208,0.18); }
+.rank-num.top { color: var(--red); }
+.rank-emoji { font-size: 20px; }
+.rank-info { flex: 1; }
+.rank-name { font-family: var(--display); font-size: 14px; font-weight: 400; letter-spacing: 0.03em; margin-bottom: 2px; }
+.rank-origin { font-size: 10px; color: rgba(240,232,208,0.38); }
+.rank-val { font-family: var(--display); font-size: 18px; font-weight: 500; min-width: 38px; text-align: right; }
+.rank-val.danger { color: var(--red); }
+.rank-val.rarity { color: var(--amber); }
+
+/* DETAIL PANEL */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.72); z-index: 1000; justify-content: flex-end; }
+.overlay.open { display: flex; }
+.detail-panel { background: var(--bg2); width: min(600px, 100vw); height: 100vh; overflow-y: auto; border-left: 1px solid var(--border2); animation: slideIn 0.22s ease; }
+@keyframes slideIn { from{transform:translateX(100%);} to{transform:translateX(0);} }
+.detail-close { position: sticky; top: 0; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0.7rem 1.25rem; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+.detail-file-num { font-size: 10px; letter-spacing: 0.18em; color: rgba(240,232,208,0.32); }
+.detail-close-btn { background: transparent; border: 1px solid var(--border2); color: var(--paper); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 4px 12px; cursor: pointer; transition: border-color 0.13s; }
+.detail-close-btn:hover { border-color: var(--red); color: var(--red); }
+.detail-banner { padding: 1.8rem 1.5rem 1.4rem; border-bottom: 1px solid var(--border); position: relative; }
+.detail-stamp { position: absolute; top: 1.4rem; right: 1.4rem; font-family: var(--display); font-size: 13px; letter-spacing: 0.22em; color: rgba(192,57,43,0.48); border: 3px solid rgba(192,57,43,0.38); padding: 3px 11px; transform: rotate(-12deg); }
+.detail-emoji { font-size: 52px; margin-bottom: 0.9rem; display: block; line-height: 1; }
+.detail-name { font-family: var(--display); font-size: 34px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 3px; line-height: 1.1; }
+.detail-aka { font-size: 12px; color: rgba(240,232,208,0.42); font-style: italic; margin-bottom: 0.7rem; font-family: var(--serif); }
+.detail-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+.detail-meta-label { font-size: 9px; letter-spacing: 0.18em; color: rgba(240,232,208,0.3); margin-bottom: 2px; }
+.detail-meta-val { font-size: 12px; color: rgba(240,232,208,0.78); }
+.detail-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.detail-body { padding: 1.4rem 1.5rem; }
+.detail-section { margin-bottom: 1.4rem; }
+.detail-section-label { font-size: 9px; letter-spacing: 0.28em; color: var(--red); text-transform: uppercase; margin-bottom: 0.55rem; padding-bottom: 0.38rem; border-bottom: 1px solid rgba(192,57,43,0.28); }
+.detail-text { font-size: 13px; line-height: 1.8; color: rgba(240,232,208,0.68); font-family: var(--serif); }
+.detail-sighting-box { background: var(--bg3); border: 1px solid var(--border2); border-left: 3px solid var(--red); padding: 0.9rem 1.1rem; margin-bottom: 0.65rem; }
+.sighting-date { font-size: 10px; letter-spacing: 0.13em; color: var(--amber); margin-bottom: 4px; }
+.sighting-text { font-size: 12px; line-height: 1.7; color: rgba(240,232,208,0.62); font-family: var(--serif); }
+.detail-meters { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.4rem; }
+.meter-label { font-size: 9px; letter-spacing: 0.13em; color: rgba(240,232,208,0.38); margin-bottom: 5px; text-transform: uppercase; }
+.meter-bar { height: 4px; background: rgba(240,232,208,0.08); position: relative; margin-bottom: 4px; }
+.meter-fill { height: 100%; position: absolute; left: 0; top: 0; }
+.meter-val { font-size: 11px; color: rgba(240,232,208,0.55); }
+.detail-abilities { list-style: none; }
+.detail-abilities li { font-size: 12px; color: rgba(240,232,208,0.62); padding: 5px 0 5px 1rem; border-bottom: 1px solid var(--border); position: relative; font-family: var(--serif); }
+.detail-abilities li::before { content: '▸'; position: absolute; left: 0; color: var(--red); font-size: 10px; top: 6px; }
+
+/* FOOTER */
+.site-footer { border-top: 1px solid var(--border); padding: 1.4rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: rgba(240,232,208,0.22); letter-spacing: 0.09em; margin-top: 3rem; flex-wrap: wrap; gap: 0.5rem; }
+.footer-warn { color: rgba(192,57,43,0.45); }
+
+/* EMPTY */
+.empty-state { text-align: center; padding: 4rem 2rem; color: rgba(240,232,208,0.28); font-size: 12px; grid-column: 1/-1; letter-spacing: 0.1em; }
+
+@media (max-width: 680px) {
+  .header-stats { display: none; }
+  .header-main { padding: 0.8rem 1rem; }
+  .controls-bar { top: 78px; padding: 0.7rem 1rem; }
+  .main-content { padding: 1rem; }
+  .list-header, .list-row { grid-template-columns: 38px 1fr 80px 60px; }
+  .list-header > *:nth-child(3), .list-row > *:nth-child(3),
+  .list-header > *:nth-child(5), .list-row > *:nth-child(5),
+  .list-header > *:nth-child(6), .list-row > *:nth-child(6) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <span>CRYPTIDWIKI PARANORMAL FIELD DATABASE — ACCESS LEVEL: PUBLIC</span>
+    <span id="clock"></span>
+    <span>ENCRYPTION: ACTIVE <span class="blink">█</span></span>
+  </div>
+  <div class="header-main">
+    <div class="logo">
+      <div class="logo-classified">// CLASSIFIED //</div>
+      <div class="logo-title">CRYPTID<span>WIKI</span></div>
+      <div class="logo-sub">PARANORMAL FIELD DATABASE v2.1</div>
+    </div>
+    <div class="header-search">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="main-search" placeholder="SEARCH ENTITIES, LOCATIONS, CLASSIFICATIONS...">
+    </div>
+    <div class="header-stats">
+      <div class="stat">
+        <div class="stat-num" id="total-count">0</div>
+        <div class="stat-label">ENTITIES LOGGED</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">47</div>
+        <div class="stat-label">COUNTRIES</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" style="color:var(--red)">12</div>
+        <div class="stat-label">CRITICAL THREAT</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-tag">// FIELD RESEARCH COMPENDIUM //</div>
+  <h1 class="hero-title">
+    The World's Most Complete
+    <strong>Paranormal Entity Database</strong>
+  </h1>
+  <p class="hero-desc">Documented sightings, classified reports, and folkloric records spanning 6,000 years of human encounters with the unknown. Every entry verified against primary field sources.</p>
+</section>
+
+<div class="controls-bar">
+  <span class="controls-label">VIEW //</span>
+  <div style="display:flex;gap:5px;">
+    <button class="nav-tab active" id="tab-grid">GRID</button>
+    <button class="nav-tab" id="tab-list">LIST</button>
+    <button class="nav-tab" id="tab-map">MAP</button>
+    <button class="nav-tab" id="tab-rankings">RANKINGS</button>
+  </div>
+  <span class="controls-label" style="margin-left:0.75rem">FILTER //</span>
+  <div style="display:flex;gap:5px;flex-wrap:wrap;">
+    <button class="pill active" data-filter="all">ALL</button>
+    <button class="pill" data-filter="cryptid">CRYPTID</button>
+    <button class="pill" data-filter="spirit">SPIRIT</button>
+    <button class="pill" data-filter="beast">BEAST</button>
+    <button class="pill" data-filter="demon">DEMON</button>
+    <button class="pill" data-filter="humanoid">HUMANOID</button>
+    <button class="pill" data-filter="aquatic">AQUATIC</button>
+    <button class="pill" data-filter="folklore">FOLKLORE</button>
+  </div>
+  <select class="sort-select" id="sort-select">
+    <option value="name">SORT: A–Z</option>
+    <option value="threat">SORT: THREAT</option>
+    <option value="rarity">SORT: RARITY</option>
+    <option value="region">SORT: REGION</option>
+  </select>
+</div>
+
+<main class="main-content">
+  <div class="map-section" id="view-map">
+    <div class="map-container">
+      <div class="map-header">
+        <span class="map-title">// GLOBAL ENTITY DISTRIBUTION MAP //</span>
+        <span class="map-hint">HOVER PINS FOR NAME — CLICK TO OPEN FILE</span>
+      </div>
+      <div class="map-body">
+        <svg class="map-svg" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="900" height="400" fill="#0c1018"/>
+          <path d="M80,60 L180,50 L220,80 L230,140 L200,180 L160,200 L130,220 L100,240 L80,220 L60,180 L50,140 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M160,240 L210,230 L230,260 L220,320 L190,360 L160,360 L140,320 L130,280 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M380,50 L450,45 L470,70 L460,100 L430,110 L400,100 L370,90 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M390,120 L450,110 L480,140 L490,200 L470,270 L430,300 L390,280 L370,220 L365,160 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M470,40 L650,35 L700,70 L720,120 L680,160 L620,170 L560,150 L520,130 L480,100 L465,70 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M560,160 L640,155 L680,200 L660,240 L610,250 L570,220 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M680,250 L770,240 L800,270 L790,320 L740,340 L690,320 L670,290 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M730,80 L750,75 L760,95 L740,105 L725,95 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <path d="M362,55 L375,50 L378,68 L365,72 Z" fill="#141c28" stroke="#1e2d40" stroke-width="1"/>
+          <line x1="0" y1="200" x2="900" y2="200" stroke="#182030" stroke-width="0.5" stroke-dasharray="4,8"/>
+          <line x1="450" y1="0" x2="450" y2="400" stroke="#182030" stroke-width="0.5" stroke-dasharray="4,8"/>
+          <text x="10" y="393" fill="#182030" font-size="8" font-family="monospace">CRYPTIDWIKI GLOBAL ENTITY MAP</text>
+        </svg>
+        <div class="map-pins" id="map-pins"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rankings-section" id="view-rankings">
+    <div class="ranking-panel">
+      <div class="ranking-header">
+        <span class="ranking-title danger">// TOP THREAT LEVEL //</span>
+        <span style="font-size:9px;color:rgba(240,232,208,0.3);letter-spacing:0.1em">DANGER INDEX</span>
+      </div>
+      <div id="danger-rankings"></div>
+    </div>
+    <div class="ranking-panel">
+      <div class="ranking-header">
+        <span class="ranking-title rarity">// RARITY INDEX //</span>
+        <span style="font-size:9px;color:rgba(240,232,208,0.3);letter-spacing:0.1em">SIGHTING SCARCITY</span>
+      </div>
+      <div id="rarity-rankings"></div>
+    </div>
+  </div>
+
+  <div class="creatures-grid" id="view-grid"></div>
+
+  <div class="creatures-list" id="view-list">
+    <div class="list-header">
+      <span></span><span>ENTITY NAME</span><span>ORIGIN</span><span>TYPE</span><span>THREAT</span><span>RARITY</span>
+    </div>
+    <div id="list-rows"></div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-close">
+      <span class="detail-file-num" id="detail-file-num">FILE #0000</span>
+      <button class="detail-close-btn" id="close-btn">✕ CLOSE FILE</button>
+    </div>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span>CRYPTIDWIKI PARANORMAL FIELD DATABASE — EST. 2024</span>
+  <span class="footer-warn">⚠ FOR RESEARCH PURPOSES ONLY</span>
+  <span>ALL SIGHTINGS UNVERIFIED BY OFFICIAL AGENCIES</span>
+</footer>
+
+<script src="creatures.js"></script>
+<script>
+// creatures loaded from creatures.js
+
+// ── STATE ──
+var state = { view:'grid', filter:'all', sort:'name', query:'' };
+
+// ── CLOCK ──
+function updateClock() {
+  var el = document.getElementById('clock');
+  if (el) el.textContent = new Date().toUTCString().replace('GMT','UTC');
+}
+setInterval(updateClock, 1000);
+updateClock();
+document.getElementById('total-count').textContent = creatures.length;
+
+// ── HELPERS ──
+function threatBadge(t) {
+  if (t >= 90) return ['CRITICAL','threat-critical'];
+  if (t >= 75) return ['HIGH','threat-high'];
+  if (t >= 50) return ['MODERATE','threat-moderate'];
+  return ['LOW','threat-low'];
+}
+function threatColor(t) {
+  if (t >= 90) return '#e74c3c';
+  if (t >= 75) return '#e67e22';
+  if (t >= 50) return '#d4a017';
+  return '#27ae60';
+}
+function tagHtml(tags) {
+  return tags.map(function(t){ return '<span class="ctag ctag-'+t+'">'+t.toUpperCase()+'</span>'; }).join('');
+}
+function rarityLabel(r) {
+  if (r >= 90) return 'MYTHIC';
+  if (r >= 75) return 'RARE';
+  if (r >= 50) return 'UNCOMMON';
+  return 'COMMON';
+}
+function getFiltered() {
+  var list = creatures.filter(function(c) {
+    var mf = state.filter === 'all' || c.type === state.filter || c.tags.indexOf(state.filter) >= 0;
+    var q = state.query.toLowerCase();
+    var ms = !q || c.name.toLowerCase().indexOf(q) >= 0 || c.origin.toLowerCase().indexOf(q) >= 0 || (c.aka && c.aka.toLowerCase().indexOf(q) >= 0) || c.tags.join(' ').indexOf(q) >= 0;
+    return mf && ms;
+  });
+  if (state.sort === 'threat') list.sort(function(a,b){ return b.threat - a.threat; });
+  else if (state.sort === 'rarity') list.sort(function(a,b){ return b.rarity - a.rarity; });
+  else if (state.sort === 'region') list.sort(function(a,b){ return a.region.localeCompare(b.region); });
+  else list.sort(function(a,b){ return a.name.localeCompare(b.name); });
+  return list;
+}
+
+// ── VIEW SWITCHING ──
+function showView(v) {
+  state.view = v;
+  ['grid','list','map','rankings'].forEach(function(name) {
+    var el = document.getElementById('view-'+name);
+    var tab = document.getElementById('tab-'+name);
+    if (!el || !tab) return;
+    if (name === v) {
+      tab.classList.add('active');
+      if (name === 'grid') { el.style.display = 'grid'; }
+      else if (name === 'rankings') { el.style.display = 'grid'; el.style.gridTemplateColumns = '1fr 1fr'; }
+      else { el.style.display = 'block'; }
+    } else {
+      tab.classList.remove('active');
+      el.style.display = 'none';
+    }
+  });
+  render();
+}
+
+function render() {
+  if (state.view === 'grid') renderGrid();
+  else if (state.view === 'list') renderList();
+  else if (state.view === 'map') renderMap();
+  else if (state.view === 'rankings') renderRankings();
+}
+
+// ── GRID ──
+function renderGrid() {
+  var list = getFiltered();
+  var el = document.getElementById('view-grid');
+  if (!list.length) { el.innerHTML = '<div class="empty-state">NO ENTITIES MATCH CURRENT PARAMETERS</div>'; return; }
+  el.innerHTML = list.map(function(c, i) {
+    var tb = threatBadge(c.threat);
+    return '<div class="creature-card" onclick="openDetail('+c.id+')" style="animation-delay:'+Math.min(i*0.03,0.4)+'s">'
+      +'<div class="card-file-num">FILE #'+pad(c.id)+' — '+c.region.toUpperCase().replace('_',' ')+'</div>'
+      +'<div class="card-top"><span class="card-emoji">'+c.emoji+'</span><span class="card-threat-badge '+tb[1]+'">'+tb[0]+'</span></div>'
+      +'<div class="card-name">'+c.name+'</div>'
+      +(c.aka ? '<div class="card-aka">"'+c.aka+'"</div>' : '')
+      +'<div class="card-origin">📍 '+c.origin+'</div>'
+      +'<div class="card-excerpt">'+c.lore+'</div>'
+      +'<div class="card-tags">'+tagHtml(c.tags)+'</div>'
+      +'<div class="card-stamp">'+tb[0]+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── LIST ──
+function renderList() {
+  var list = getFiltered();
+  var el = document.getElementById('list-rows');
+  if (!list.length) { el.innerHTML = '<div class="empty-state" style="grid-column:unset">NO ENTITIES MATCH PARAMETERS</div>'; return; }
+  el.innerHTML = list.map(function(c) {
+    var tb = threatBadge(c.threat);
+    return '<div class="list-row" onclick="openDetail('+c.id+')">'
+      +'<span class="list-emoji">'+c.emoji+'</span>'
+      +'<div><div class="list-name">'+c.name+'</div>'+(c.aka?'<div class="list-aka">'+c.aka+'</div>':'')+'</div>'
+      +'<span class="list-origin">'+c.origin+'</span>'
+      +'<span>'+tagHtml([c.tags[0]])+'</span>'
+      +'<div style="display:flex;align-items:center;gap:6px"><div class="list-bar" style="flex:1"><div class="list-bar-fill" style="width:'+c.threat+'%;background:'+threatColor(c.threat)+'"></div></div><span style="font-size:10px;color:rgba(240,232,208,0.45);min-width:24px">'+c.threat+'</span></div>'
+      +'<span class="list-rarity">'+rarityLabel(c.rarity)+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+// ── MAP ──
+function renderMap() {
+  var list = getFiltered();
+  var el = document.getElementById('map-pins');
+  el.innerHTML = list.map(function(c) {
+    var px = c.mapX / 900 * 100;
+    var py = c.mapY / 400 * 100;
+    return '<div class="pin" style="left:'+px+'%;top:'+py+'%" onclick="openDetail('+c.id+')">'
+      +'<div class="pin-dot"></div>'
+      +'<div class="pin-label">'+c.emoji+' '+c.name+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── RANKINGS ──
+function renderRankings() {
+  var byThreat = creatures.slice().sort(function(a,b){ return b.threat-a.threat; }).slice(0,15);
+  var byRarity = creatures.slice().sort(function(a,b){ return b.rarity-a.rarity; }).slice(0,15);
+  document.getElementById('danger-rankings').innerHTML = byThreat.map(function(c,i){
+    return '<div class="ranking-row" onclick="openDetail('+c.id+')">'
+      +'<span class="rank-num'+(i<3?' top':'')+'">'+( i+1)+'</span>'
+      +'<span class="rank-emoji">'+c.emoji+'</span>'
+      +'<div class="rank-info"><div class="rank-name">'+c.name+'</div><div class="rank-origin">'+c.origin+'</div></div>'
+      +'<span class="rank-val danger">'+c.threat+'</span>'
+      +'</div>';
+  }).join('');
+  document.getElementById('rarity-rankings').innerHTML = byRarity.map(function(c,i){
+    return '<div class="ranking-row" onclick="openDetail('+c.id+')">'
+      +'<span class="rank-num'+(i<3?' top':'')+'">'+( i+1)+'</span>'
+      +'<span class="rank-emoji">'+c.emoji+'</span>'
+      +'<div class="rank-info"><div class="rank-name">'+c.name+'</div><div class="rank-origin">'+c.origin+'</div></div>'
+      +'<span class="rank-val rarity">'+c.rarity+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+// ── DETAIL ──
+function pad(n){ return String(n).padStart(4,'0'); }
+function openDetail(id) {
+  var c = null;
+  for (var i=0;i<creatures.length;i++){ if (creatures[i].id===id){ c=creatures[i]; break; } }
+  if (!c) return;
+  var tb = threatBadge(c.threat);
+  document.getElementById('detail-file-num').textContent = 'FILE #'+pad(c.id)+' — CLASSIFICATION: '+tb[0];
+  document.getElementById('detail-content').innerHTML =
+    '<div class="detail-banner">'
+    +'<div class="detail-stamp">'+tb[0]+'</div>'
+    +'<span class="detail-emoji">'+c.emoji+'</span>'
+    +'<div class="detail-name">'+c.name+'</div>'
+    +(c.aka?'<div class="detail-aka">"'+c.aka+'"</div>':'')
+    +'<div class="detail-meta">'
+    +'<div><div class="detail-meta-label">ORIGIN</div><div class="detail-meta-val">'+c.origin+'</div></div>'
+    +'<div><div class="detail-meta-label">CLASSIFICATION</div><div class="detail-meta-val">'+c.type.toUpperCase()+'</div></div>'
+    +'<div><div class="detail-meta-label">RARITY</div><div class="detail-meta-val" style="color:var(--amber)">'+rarityLabel(c.rarity)+'</div></div>'
+    +'</div>'
+    +'<div class="detail-tags">'+tagHtml(c.tags)+'</div>'
+    +'</div>'
+    +'<div class="detail-body">'
+    +'<div class="detail-meters">'
+    +'<div><div class="meter-label">THREAT INDEX</div><div class="meter-bar"><div class="meter-fill" style="width:'+c.threat+'%;background:'+threatColor(c.threat)+'"></div></div><div class="meter-val">'+c.threat+'/100 — '+tb[0]+'</div></div>'
+    +'<div><div class="meter-label">RARITY INDEX</div><div class="meter-bar"><div class="meter-fill" style="width:'+c.rarity+'%;background:var(--amber)"></div></div><div class="meter-val">'+c.rarity+'/100 — '+rarityLabel(c.rarity)+'</div></div>'
+    +'</div>'
+    +'<div class="detail-section"><div class="detail-section-label">// FIELD NOTES & LORE //</div><p class="detail-text">'+c.lore+'</p></div>'
+    +'<div class="detail-section"><div class="detail-section-label">// DOCUMENTED ABILITIES //</div><ul class="detail-abilities">'+c.abilities.map(function(a){ return '<li>'+a+'</li>'; }).join('')+'</ul></div>'
+    +'<div class="detail-section"><div class="detail-section-label">// NOTABLE SIGHTINGS //</div>'+c.sightings.map(function(s){ return '<div class="detail-sighting-box"><div class="sighting-date">'+s.date+'</div><div class="sighting-text">'+s.text+'</div></div>'; }).join('')+'</div>'
+    +'</div>';
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDetail() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── EVENT LISTENERS ──
+document.getElementById('tab-grid').addEventListener('click', function(){ showView('grid'); });
+document.getElementById('tab-list').addEventListener('click', function(){ showView('list'); });
+document.getElementById('tab-map').addEventListener('click', function(){ showView('map'); });
+document.getElementById('tab-rankings').addEventListener('click', function(){ showView('rankings'); });
+
+document.querySelectorAll('.pill').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    state.filter = this.getAttribute('data-filter');
+    document.querySelectorAll('.pill').forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
+    render();
+  }.bind(btn));
+});
+
+document.getElementById('sort-select').addEventListener('change', function(){
+  state.sort = this.value;
+  render();
+});
+
+document.getElementById('main-search').addEventListener('input', function(){
+  state.query = this.value;
+  render();
+});
+
+document.getElementById('close-btn').addEventListener('click', closeDetail);
+
+document.getElementById('overlay').addEventListener('click', function(e){
+  if (e.target === this) closeDetail();
+});
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') closeDetail();
+});
+
+// ── INIT ──
+showView('grid');
+</script>
+</body>
+</html>
