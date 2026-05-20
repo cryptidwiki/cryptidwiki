@@ -68,7 +68,8 @@ body::before {
 /* CONTROLS */
 .controls-bar { padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; background: var(--bg2); position: sticky; top: 91px; z-index: 90; }
 .controls-label { font-size: 9px; letter-spacing: 0.18em; color: rgba(240,232,208,0.3); white-space: nowrap; }
-.nav-tab { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 12px; border: 1px solid transparent; cursor: pointer; background: transparent; color: rgba(240,232,208,0.42); font-family: var(--mono); transition: all 0.12s; }
+.nav-tabs-wrap { display: flex; gap: 5px; overflow-x: auto; flex-shrink: 0; }
+.nav-tab { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border: 1px solid transparent; cursor: pointer; background: transparent; color: rgba(240,232,208,0.42); font-family: var(--mono); transition: all 0.12s; white-space: nowrap; }
 .nav-tab:hover { color: var(--paper); border-color: var(--border2); }
 .nav-tab.active { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.09); }
 .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; padding: 4px 11px; border: 1px solid var(--border2); color: rgba(240,232,208,0.45); background: transparent; cursor: pointer; transition: all 0.12s; text-transform: uppercase; }
@@ -261,6 +262,7 @@ body::before {
   .logo-sub { display: none; }
   .header-search { max-width: 100%; flex: 1; }
   .header-search input { font-size: 11px; padding: 7px 10px 7px 28px; }
+  .header-stats { display: none; }
 
   /* HERO */
   .hero { padding: 1.5rem 1rem; }
@@ -278,7 +280,8 @@ body::before {
   }
   .controls-label { display: none; }
   .controls-bar > div:first-of-type { width: 100%; justify-content: space-between; }
-  .nav-tab { flex: 1; text-align: center; padding: 6px 4px; font-size: 9px; }
+  .nav-tabs-wrap { width: 100%; justify-content: space-between; }
+  .nav-tab { flex: 1; text-align: center; padding: 5px 2px; font-size: 8px; letter-spacing: 0.05em; }
   .filter-pills-wrap { width: 100%; overflow-x: auto; padding-bottom: 4px; }
   .pill { font-size: 9px; padding: 4px 9px; white-space: nowrap; }
   .sort-select { width: 100%; margin-left: 0; font-size: 10px; padding: 5px 8px; }
@@ -377,7 +380,7 @@ body::before {
 
 <div class="controls-bar">
   <span class="controls-label">VIEW //</span>
-  <div style="display:flex;gap:5px;">
+  <div class="nav-tabs-wrap">
     <button class="nav-tab active" id="tab-grid">GRID</button>
     <button class="nav-tab" id="tab-list">LIST</button>
     <button class="nav-tab" id="tab-map">MAP</button>
