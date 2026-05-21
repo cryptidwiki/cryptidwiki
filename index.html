@@ -22,22 +22,8 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--paper);
-  font-family: var(--mono);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.13) 2px, rgba(0,0,0,0.13) 4px);
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.25;
-}
+body { background: var(--bg); color: var(--paper); font-family: var(--mono); min-height: 100vh; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.13) 2px, rgba(0,0,0,0.13) 4px); pointer-events: none; z-index: 9999; opacity: 0.25; }
 
 /* HEADER */
 .site-header { border-bottom: 1px solid var(--border2); background: var(--bg2); position: sticky; top: 0; z-index: 100; }
@@ -72,6 +58,10 @@ body::before {
 .nav-tab { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border: 1px solid transparent; cursor: pointer; background: transparent; color: rgba(240,232,208,0.42); font-family: var(--mono); transition: all 0.12s; white-space: nowrap; }
 .nav-tab:hover { color: var(--paper); border-color: var(--border2); }
 .nav-tab.active { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.09); }
+.nav-tab.live { border-color: rgba(192,57,43,0.3); color: rgba(192,57,43,0.7); display: flex; align-items: center; gap: 5px; }
+.nav-tab.live:hover { border-color: var(--red); color: var(--red); }
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); animation: livepulse 1.5s ease-in-out infinite; }
+@keyframes livepulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; padding: 4px 11px; border: 1px solid var(--border2); color: rgba(240,232,208,0.45); background: transparent; cursor: pointer; transition: all 0.12s; text-transform: uppercase; }
 .pill:hover { border-color: var(--paper); color: var(--paper); }
 .pill.active { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.09); }
@@ -197,6 +187,16 @@ body::before {
 .detail-abilities li { font-size: 12px; color: rgba(240,232,208,0.62); padding: 5px 0 5px 1rem; border-bottom: 1px solid var(--border); position: relative; font-family: var(--serif); }
 .detail-abilities li::before { content: '▸'; position: absolute; left: 0; color: var(--red); font-size: 10px; top: 6px; }
 
+/* REPORTED.LIVE BANNER */
+.reported-banner { margin: 3rem 1.5rem 0; border: 1px solid rgba(192,57,43,0.35); background: rgba(192,57,43,0.04); padding: 1.5rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.rb-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: livepulse 1.5s ease-in-out infinite; flex-shrink: 0; }
+.rb-text { flex: 1; min-width: 200px; }
+.rb-tag { font-size: 9px; letter-spacing: 0.25em; color: var(--red); margin-bottom: 5px; }
+.rb-title { font-family: var(--display); font-size: 20px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 5px; }
+.rb-sub { font-size: 11px; color: rgba(240,232,208,0.5); line-height: 1.7; }
+.rb-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 12px 24px; border: 1px solid var(--red); color: var(--red); background: rgba(192,57,43,0.08); text-decoration: none; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+.rb-btn:hover { background: rgba(192,57,43,0.2); }
+
 /* FOOTER */
 .site-footer { border-top: 1px solid var(--border); padding: 1.4rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: rgba(240,232,208,0.22); letter-spacing: 0.09em; margin-top: 3rem; flex-wrap: wrap; gap: 0.5rem; }
 .footer-warn { color: rgba(192,57,43,0.45); }
@@ -204,61 +204,7 @@ body::before {
 /* EMPTY */
 .empty-state { text-align: center; padding: 4rem 2rem; color: rgba(240,232,208,0.28); font-size: 12px; grid-column: 1/-1; letter-spacing: 0.1em; }
 
-/* FIELD REPORTS */
-.field-reports-section { padding: 3rem 1.5rem 2rem; border-top: 1px solid var(--border2); margin-top: 3rem; }
-.field-reports-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap; }
-.fr-tag { font-size: 9px; letter-spacing: 0.3em; color: var(--red); margin-bottom: 6px; }
-.fr-title { font-family: var(--display); font-size: 28px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 6px; }
-.fr-subtitle { font-size: 11px; color: rgba(240,232,208,0.45); max-width: 500px; line-height: 1.6; }
-.fr-submit-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 10px 20px; border: 1px solid var(--red); color: var(--red); background: rgba(192,57,43,0.08); text-decoration: none; white-space: nowrap; transition: all 0.15s; }
-.fr-submit-btn:hover { background: rgba(192,57,43,0.2); }
-
-.fr-ticker { display: flex; align-items: center; gap: 1rem; background: var(--bg2); border: 1px solid var(--border2); border-left: 3px solid var(--red); padding: 0.6rem 1rem; margin-bottom: 1.5rem; overflow: hidden; }
-.fr-ticker-label { font-size: 9px; letter-spacing: 0.2em; color: var(--red); white-space: nowrap; flex-shrink: 0; }
-.fr-ticker-track { display: flex; overflow: hidden; flex: 1; }
-.fr-ticker-text { font-size: 10px; color: rgba(240,232,208,0.5); white-space: nowrap; animation: ticker 30s linear infinite; letter-spacing: 0.05em; }
-@keyframes ticker { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
-
-.fr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 2rem; }
-.fr-card { background: var(--bg2); overflow: hidden; cursor: default; transition: background 0.13s; }
-.fr-card:hover { background: var(--bg3); }
-.fr-card-img-wrap { position: relative; height: 140px; background: var(--bg3); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-.fr-card-img-placeholder { font-size: 40px; opacity: 0.15; }
-.fr-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; cursor: zoom-in; display: block; }
-.fr-card-status { position: absolute; top: 0.75rem; right: 0.75rem; font-size: 9px; letter-spacing: 0.15em; padding: 3px 8px; border: 1px solid; font-family: var(--mono); }
-.fr-card-status.pending { border-color: var(--amber); color: var(--amber); background: rgba(212,160,23,0.1); }
-.fr-card-status.verified { border-color: #27ae60; color: #27ae60; background: rgba(39,174,96,0.1); }
-.fr-card-status.unverified { border-color: rgba(240,232,208,0.3); color: rgba(240,232,208,0.3); }
-.fr-card-body { padding: 1rem 1.1rem 1.1rem; }
-.fr-card-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-.fr-card-creature { font-family: var(--display); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; color: var(--red); }
-.fr-card-date { font-size: 9px; letter-spacing: 0.1em; color: rgba(240,232,208,0.35); }
-.fr-card-location { font-size: 10px; color: rgba(240,232,208,0.45); margin-bottom: 0.75rem; }
-.fr-card-context-wrap { margin-bottom: 0.5rem; position: relative; }
-.fr-card-context { font-size: 12px; line-height: 1.7; color: rgba(240,232,208,0.65); font-family: var(--serif); max-height: 82px; overflow: hidden; transition: max-height 0.3s ease; }
-.fr-card-context.expanded { max-height: 600px; }
-.fr-read-more { background: transparent; border: none; color: var(--red); font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; cursor: pointer; padding: 4px 0 0.6rem 0; display: block; transition: opacity 0.15s; }
-.fr-read-more:hover { opacity: 0.7; }
-.fr-card-reporter { font-size: 9px; letter-spacing: 0.1em; color: rgba(240,232,208,0.25); }
-
-.fr-cta { border: 1px solid var(--border2); background: var(--bg2); }
-.fr-cta-inner { padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-.fr-cta-icon { font-size: 32px; flex-shrink: 0; }
-.fr-cta-text { flex: 1; min-width: 200px; }
-.fr-cta-title { font-family: var(--display); font-size: 16px; font-weight: 500; letter-spacing: 0.08em; margin-bottom: 6px; }
-.fr-cta-sub { font-size: 11px; color: rgba(240,232,208,0.5); line-height: 1.6; }
-.fr-cta-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 12px 24px; border: 1px solid var(--red); color: var(--red); background: rgba(192,57,43,0.08); text-decoration: none; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; }
-.fr-cta-btn:hover { background: rgba(192,57,43,0.2); }
-
 @media (max-width: 768px) {
-  /* FIELD REPORTS */
-  .field-reports-section { padding: 2rem 0.75rem; }
-  .fr-title { font-size: 22px; }
-  .fr-grid { grid-template-columns: 1fr; }
-  .fr-cta-inner { flex-direction: column; text-align: center; }
-  .fr-submit-btn { width: 100%; text-align: center; }
-
-  /* HEADER */
   .header-top { display: none; }
   .header-stats { display: none; }
   .header-main { padding: 0.75rem 1rem; gap: 0.75rem; flex-wrap: nowrap; }
@@ -267,14 +213,10 @@ body::before {
   .logo-sub { display: none; }
   .header-search { max-width: 100%; flex: 1; }
   .header-search input { font-size: 11px; padding: 7px 10px 7px 28px; }
-
-  /* HERO */
   .hero { padding: 1.5rem 1rem; }
   .hero-tag { font-size: 8px; }
   .hero-title { font-size: 22px; }
   .hero-desc { font-size: 11px; }
-
-  /* CONTROLS BAR */
   .controls-bar { top: 58px; padding: 0.6rem 0.75rem; gap: 0.5rem; flex-direction: column; align-items: flex-start; }
   .controls-label { display: none; }
   .nav-tabs-wrap { width: 100%; }
@@ -282,34 +224,22 @@ body::before {
   .filter-pills-wrap { width: 100%; overflow-x: auto; padding-bottom: 4px; }
   .pill { font-size: 9px; padding: 4px 9px; white-space: nowrap; }
   .sort-select { width: 100%; margin-left: 0; font-size: 10px; padding: 5px 8px; }
-
-  /* MAIN */
   .main-content { padding: 0.75rem; }
-
-  /* GRID */
   .creatures-grid { grid-template-columns: 1fr 1fr; gap: 1px; }
   .creature-card { padding: 1rem; }
   .card-name { font-size: 15px; }
   .card-excerpt { -webkit-line-clamp: 2; }
   .card-stamp { display: none; }
-
-  /* LIST */
   .list-header, .list-row { grid-template-columns: 32px 1fr 70px; gap: 0.5rem; padding: 0.6rem 0.75rem; }
   .list-header > *:nth-child(n+4), .list-row > *:nth-child(n+4) { display: none; }
   .list-name { font-size: 13px; }
-
-  /* MAP */
   .map-body { height: 220px; }
   .map-hint { display: none; }
   .map-title { font-size: 11px; }
   .pin-label { display: none; }
-
-  /* RANKINGS */
   .rankings-section.active { grid-template-columns: 1fr; gap: 1rem; }
   .rank-name { font-size: 13px; }
   .rank-val { font-size: 15px; }
-
-  /* DETAIL PANEL */
   .overlay { align-items: flex-end; }
   .detail-panel { width: 100vw; height: 92vh; border-left: none; border-top: 1px solid var(--border2); border-radius: 12px 12px 0 0; animation: slideUp 0.25s ease; }
   .detail-name { font-size: 26px; }
@@ -317,11 +247,10 @@ body::before {
   .detail-meters { grid-template-columns: 1fr; }
   .detail-body { padding: 1rem; }
   .detail-banner { padding: 1.25rem 1rem 1rem; }
-
-  /* FOOTER */
   .site-footer { flex-direction: column; align-items: center; text-align: center; padding: 1rem; }
+  .reported-banner { margin: 2rem 0.75rem 0; flex-direction: column; text-align: center; }
+  .rb-btn { width: 100%; justify-content: center; }
 }
-
 @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
 </style>
 </head>
@@ -376,7 +305,9 @@ body::before {
     <button class="nav-tab" id="tab-list">LIST</button>
     <button class="nav-tab" id="tab-map">MAP</button>
     <button class="nav-tab" id="tab-rankings">RANKINGS</button>
-    <button class="nav-tab" id="tab-sightings">SIGHTINGS</button>
+    <button class="nav-tab live" id="tab-sightings" onclick="window.open('https://reported.live','_blank')">
+      <div class="live-dot"></div>LIVE REPORTS
+    </button>
   </div>
   <span class="controls-label" style="margin-left:0.75rem">FILTER //</span>
   <div class="filter-pills-wrap" style="display:flex;gap:5px;flex-wrap:wrap;">
@@ -462,45 +393,17 @@ body::before {
   </div>
 </div>
 
-<!-- FIELD REPORTS SECTION -->
-<section class="field-reports-section" id="field-reports">
-  <div class="field-reports-header">
-    <div class="fr-title-block">
-      <div class="fr-tag">// LIVE TRANSMISSION //</div>
-      <h2 class="fr-title">LATEST FIELD REPORTS</h2>
-      <p class="fr-subtitle">Unverified civilian sightings submitted to the CryptidWiki database. All reports pending investigation.</p>
-    </div>
-    <a href="https://forms.gle/YNEc67CtNEvSgXEu9" target="_blank" class="fr-submit-btn">
-      + SUBMIT A SIGHTING
-    </a>
+<!-- REPORTED.LIVE BANNER -->
+<div class="reported-banner">
+  <div class="rb-live-dot"></div>
+  <div class="rb-text">
+    <div class="rb-tag">// LIVE INCIDENT MONITORING //</div>
+    <div class="rb-title">WITNESSED SOMETHING?</div>
+    <div class="rb-sub">Report your sighting on reported.live — our live US incident map where the community tracks cryptid encounters, UFOs, ghost activity, and unexplained events in real time.</div>
   </div>
-
-  <div class="fr-ticker">
-    <span class="fr-ticker-label">INCOMING //</span>
-    <div class="fr-ticker-track">
-      <span class="fr-ticker-text">NEW REPORT: Mothman sighting over Chicago — 3 witnesses — PENDING REVIEW &nbsp;///&nbsp; NEW REPORT: Large bipedal figure photographed near Skinwalker Ranch — PENDING REVIEW &nbsp;///&nbsp; NEW REPORT: Unexplained lights over Flatwoods WV — possible entity — PENDING REVIEW &nbsp;///&nbsp; NEW REPORT: Howling consistent with Wendigo reported in Ontario — PENDING REVIEW &nbsp;///&nbsp;</span>
-      <span class="fr-ticker-text">NEW REPORT: Mothman sighting over Chicago — 3 witnesses — PENDING REVIEW &nbsp;///&nbsp; NEW REPORT: Large bipedal figure photographed near Skinwalker Ranch — PENDING REVIEW &nbsp;///&nbsp; NEW REPORT: Unexplained lights over Flatwoods WV — possible entity — PENDING REVIEW &nbsp;///&nbsp; NEW REPORT: Howling consistent with Wendigo reported in Ontario — PENDING REVIEW &nbsp;///&nbsp;</span>
-    </div>
-  </div>
-
-  <div class="fr-grid" id="sightings-grid"></div>
-
-  <div class="fr-cta">
-    <div class="fr-cta-inner">
-      <div class="fr-cta-icon">📡</div>
-      <div class="fr-cta-text">
-        <div class="fr-cta-title">WITNESSED SOMETHING?</div>
-        <div class="fr-cta-sub">Submit your sighting to the CryptidWiki field database. Include location, creature type, and as much detail as possible. Photos strongly encouraged. All submissions reviewed before publication.</div>
-      </div>
-      <a href="https://forms.gle/YNEc67CtNEvSgXEu9" target="_blank" class="fr-cta-btn">SUBMIT FIELD REPORT</a>
-    </div>
-  </div>
-</section>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:2000;align-items:center;justify-content:center;cursor:zoom-out;" onclick="closeLightbox()">
-  <img id="lightbox-img" src="" style="max-width:90vw;max-height:90vh;object-fit:contain;border:1px solid rgba(240,232,208,0.2);">
-  <div style="position:absolute;top:1rem;right:1.5rem;color:rgba(240,232,208,0.5);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.15em;">CLICK ANYWHERE TO CLOSE</div>
+  <a href="https://reported.live" target="_blank" class="rb-btn">
+    <div class="live-dot"></div>VISIT REPORTED.LIVE
+  </a>
 </div>
 
 <footer class="site-footer">
@@ -510,68 +413,9 @@ body::before {
 </footer>
 
 <script src="creatures.js"></script>
-<script src="sightings.js"></script>
 <script>
-// sightings loaded from sightings.js
-
-function renderSightings() {
-  var grid = document.getElementById('sightings-grid');
-  if (!grid || !sightings || !sightings.length) return;
-  var statusLabel = { pending: 'PENDING REVIEW', verified: 'FIELD VERIFIED', unverified: 'UNVERIFIED' };
-  grid.innerHTML = sightings.map(function(s) {
-    var imgHtml = s.image
-      ? '<img src="' + s.image + '" alt="' + s.creature + '" onclick="openLightbox(\'' + s.image + '\')">'
-      : '<div class="fr-card-img-placeholder">📷</div>';
-    return '<div class="fr-card">'
-      + '<div class="fr-card-img-wrap">'
-      + imgHtml
-      + '<div class="fr-card-status ' + s.status + '">' + statusLabel[s.status] + '</div>'
-      + '</div>'
-      + '<div class="fr-card-body">'
-      + '<div class="fr-card-meta">'
-      + '<span class="fr-card-creature">' + s.creature + '</span>'
-      + '<span class="fr-card-date">' + s.date + '</span>'
-      + '</div>'
-      + '<div class="fr-card-location">📍 ' + s.location + '</div>'
-      + '<div class="fr-card-context-wrap">'
-      + '<p class="fr-card-context" id="ctx-' + s.id + '">' + s.context + '</p>'
-      + '<button class="fr-read-more" id="btn-' + s.id + '" onclick="toggleContext(' + s.id + ')">READ FULL REPORT ▾</button>'
-      + '</div>'
-      + '<div class="fr-card-reporter">FILED BY: ' + s.reporter + '</div>'
-      + '</div>'
-      + '</div>';
-  }).join('');
-}
-
-function toggleContext(id) {
-  var ctx = document.getElementById('ctx-' + id);
-  var btn = document.getElementById('btn-' + id);
-  if (ctx.classList.contains('expanded')) {
-    ctx.classList.remove('expanded');
-    btn.textContent = 'READ FULL REPORT ▾';
-  } else {
-    ctx.classList.add('expanded');
-    btn.textContent = 'COLLAPSE ▴';
-  }
-}
-
-
-function openLightbox(src) {
-  var lb = document.getElementById('lightbox');
-  var img = document.getElementById('lightbox-img');
-  img.src = src;
-  lb.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-function closeLightbox() {
-  document.getElementById('lightbox').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-// ── STATE ──
 var state = { view:'grid', filter:'all', sort:'name', query:'' };
 
-// ── CLOCK ──
 function updateClock() {
   var el = document.getElementById('clock');
   if (el) el.textContent = new Date().toUTCString().replace('GMT','UTC');
@@ -580,7 +424,6 @@ setInterval(updateClock, 1000);
 updateClock();
 document.getElementById('total-count').textContent = creatures.length;
 
-// ── HELPERS ──
 function threatBadge(t) {
   if (t >= 90) return ['CRITICAL','threat-critical'];
   if (t >= 75) return ['HIGH','threat-high'];
@@ -616,7 +459,6 @@ function getFiltered() {
   return list;
 }
 
-// ── VIEW SWITCHING ──
 function showView(v) {
   state.view = v;
   ['grid','list','map','rankings'].forEach(function(name) {
@@ -633,9 +475,6 @@ function showView(v) {
       el.style.display = 'none';
     }
   });
-  // deselect sightings tab when switching to another view
-  var st = document.getElementById('tab-sightings');
-  if (st) st.classList.remove('active');
   render();
 }
 
@@ -646,7 +485,6 @@ function render() {
   else if (state.view === 'rankings') renderRankings();
 }
 
-// ── GRID ──
 function renderGrid() {
   var list = getFiltered();
   var el = document.getElementById('view-grid');
@@ -666,7 +504,6 @@ function renderGrid() {
   }).join('');
 }
 
-// ── LIST ──
 function renderList() {
   var list = getFiltered();
   var el = document.getElementById('list-rows');
@@ -684,7 +521,6 @@ function renderList() {
   }).join('');
 }
 
-// ── MAP ──
 function renderMap() {
   var list = getFiltered();
   var el = document.getElementById('map-pins');
@@ -698,7 +534,6 @@ function renderMap() {
   }).join('');
 }
 
-// ── RANKINGS ──
 function renderRankings() {
   var byThreat = creatures.slice().sort(function(a,b){ return b.threat-a.threat; }).slice(0,15);
   var byRarity = creatures.slice().sort(function(a,b){ return b.rarity-a.rarity; }).slice(0,15);
@@ -720,7 +555,6 @@ function renderRankings() {
   }).join('');
 }
 
-// ── DETAIL ──
 function pad(n){ return String(n).padStart(4,'0'); }
 function openDetail(id) {
   var c = null;
@@ -758,16 +592,10 @@ function closeDetail() {
   document.body.style.overflow = '';
 }
 
-// ── EVENT LISTENERS ──
 document.getElementById('tab-grid').addEventListener('click', function(){ showView('grid'); });
 document.getElementById('tab-list').addEventListener('click', function(){ showView('list'); });
 document.getElementById('tab-map').addEventListener('click', function(){ showView('map'); });
 document.getElementById('tab-rankings').addEventListener('click', function(){ showView('rankings'); });
-document.getElementById('tab-sightings').addEventListener('click', function(){
-  document.querySelectorAll('.nav-tab').forEach(function(b){ b.classList.remove('active'); });
-  this.classList.add('active');
-  document.getElementById('field-reports').scrollIntoView({ behavior: 'smooth' });
-});
 
 document.querySelectorAll('.pill').forEach(function(btn){
   btn.addEventListener('click', function(){
@@ -789,18 +617,10 @@ document.getElementById('main-search').addEventListener('input', function(){
 });
 
 document.getElementById('close-btn').addEventListener('click', closeDetail);
+document.getElementById('overlay').addEventListener('click', function(e){ if (e.target === this) closeDetail(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeDetail(); });
 
-document.getElementById('overlay').addEventListener('click', function(e){
-  if (e.target === this) closeDetail();
-});
-
-document.addEventListener('keydown', function(e){
-  if (e.key === 'Escape') closeDetail();
-});
-
-// ── INIT ──
 showView('grid');
-renderSightings();
 </script>
 </body>
 </html>
