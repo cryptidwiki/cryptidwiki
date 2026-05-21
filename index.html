@@ -188,13 +188,13 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
 .detail-abilities li::before { content: '▸'; position: absolute; left: 0; color: var(--red); font-size: 10px; top: 6px; }
 
 /* REPORTED.LIVE BANNER */
-.reported-banner { margin: 3rem 1.5rem 0; border: 1px solid rgba(192,57,43,0.35); background: rgba(192,57,43,0.04); padding: 1.5rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
-.rb-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: livepulse 1.5s ease-in-out infinite; flex-shrink: 0; }
-.rb-text { flex: 1; min-width: 200px; }
-.rb-tag { font-size: 9px; letter-spacing: 0.25em; color: var(--red); margin-bottom: 5px; }
-.rb-title { font-family: var(--display); font-size: 20px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 5px; }
-.rb-sub { font-size: 11px; color: rgba(240,232,208,0.5); line-height: 1.7; }
-.rb-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 12px 24px; border: 1px solid var(--red); color: var(--red); background: rgba(192,57,43,0.08); text-decoration: none; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+.reported-banner { border-bottom: 1px solid var(--border2); border-top: none; background: rgba(192,57,43,0.06); padding: 0.85rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.rb-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: livepulse 1.5s ease-in-out infinite; flex-shrink: 0; }
+.rb-text { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.rb-tag { font-size: 9px; letter-spacing: 0.2em; color: var(--red); white-space: nowrap; }
+.rb-title { font-family: var(--display); font-size: 15px; font-weight: 600; letter-spacing: 0.05em; white-space: nowrap; }
+.rb-sub { font-size: 10px; color: rgba(240,232,208,0.45); line-height: 1.5; }
+.rb-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; padding: 8px 18px; border: 1px solid var(--red); color: var(--red); background: rgba(192,57,43,0.08); text-decoration: none; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
 .rb-btn:hover { background: rgba(192,57,43,0.2); }
 
 /* FOOTER */
@@ -248,8 +248,9 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
   .detail-body { padding: 1rem; }
   .detail-banner { padding: 1.25rem 1rem 1rem; }
   .site-footer { flex-direction: column; align-items: center; text-align: center; padding: 1rem; }
-  .reported-banner { margin: 2rem 0.75rem 0; flex-direction: column; text-align: center; }
-  .rb-btn { width: 100%; justify-content: center; }
+  .reported-banner { padding: 0.75rem 1rem; gap: 0.75rem; }
+  .rb-sub { display: none; }
+  .rb-btn { padding: 6px 12px; font-size: 9px; }
 }
 @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
 </style>
@@ -297,6 +298,19 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
   </h1>
   <p class="hero-desc">Documented sightings, classified reports, and folkloric records spanning 6,000 years of human encounters with the unknown. Every entry verified against primary field sources.</p>
 </section>
+
+<!-- REPORTED.LIVE BANNER -->
+<div class="reported-banner">
+  <div class="rb-live-dot"></div>
+  <div class="rb-text">
+    <div class="rb-tag">// LIVE INCIDENT MONITORING //</div>
+    <div class="rb-title">WITNESSED SOMETHING?</div>
+    <div class="rb-sub">Report your sighting on reported.live — our live US incident map tracking cryptid encounters, UFOs, ghost activity, and unexplained events in real time.</div>
+  </div>
+  <a href="https://reported.live" target="_blank" class="rb-btn">
+    <div class="live-dot"></div>VISIT REPORTED.LIVE
+  </a>
+</div>
 
 <div class="controls-bar">
   <span class="controls-label">VIEW //</span>
@@ -391,19 +405,6 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
     </div>
     <div id="detail-content"></div>
   </div>
-</div>
-
-<!-- REPORTED.LIVE BANNER -->
-<div class="reported-banner">
-  <div class="rb-live-dot"></div>
-  <div class="rb-text">
-    <div class="rb-tag">// LIVE INCIDENT MONITORING //</div>
-    <div class="rb-title">WITNESSED SOMETHING?</div>
-    <div class="rb-sub">Report your sighting on reported.live — our live US incident map where the community tracks cryptid encounters, UFOs, ghost activity, and unexplained events in real time.</div>
-  </div>
-  <a href="https://reported.live" target="_blank" class="rb-btn">
-    <div class="live-dot"></div>VISIT REPORTED.LIVE
-  </a>
 </div>
 
 <footer class="site-footer">
