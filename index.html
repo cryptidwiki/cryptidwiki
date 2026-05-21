@@ -283,11 +283,11 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
         <div class="stat-label">ENTITIES LOGGED</div>
       </div>
       <div class="stat">
-        <div class="stat-num">47</div>
+        <div class="stat-num" id="countries-count">0</div>
         <div class="stat-label">COUNTRIES</div>
       </div>
       <div class="stat">
-        <div class="stat-num" style="color:var(--red)">12</div>
+        <div class="stat-num" id="critical-count" style="color:var(--red)">0</div>
         <div class="stat-label">CRITICAL THREAT</div>
       </div>
     </div>
@@ -317,6 +317,7 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
     <button class="nav-tab live" id="tab-sightings" onclick="window.open('https://reported.live','_blank')">
       <div class="live-dot"></div>LIVE REPORTS
     </button>
+    <button class="nav-tab" id="tab-random" onclick="openRandomCreature()" style="border-color:var(--gold);color:var(--gold);">🎲 RANDOM</button>
   </div>
   <span class="controls-label" style="margin-left:0.75rem">FILTER //</span>
   <div class="filter-pills-wrap" style="display:flex;gap:5px;flex-wrap:wrap;">
@@ -433,6 +434,28 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 document.getElementById('total-count').textContent = creatures.length;
+
+// Auto-calculate countries from unique origins
+var countrySet = new Set();
+creatures.forEach(function(c) {
+  if (c.origin) {
+    c.origin.split(/[,&\/]/).forEach(function(part) {
+      var country = part.trim().replace(/\(.*?\)/g,'').replace(/\s+/g,' ').trim();
+      if (country.length > 2) countrySet.add(country);
+    });
+  }
+});
+document.getElementById('countries-count').textContent = countrySet.size;
+
+// Auto-calculate critical threat (threat >= 90)
+var criticalCount = creatures.filter(function(c){ return c.threat >= 90; }).length;
+document.getElementById('critical-count').textContent = criticalCount;
+
+// Random creature
+function openRandomCreature() {
+  var randomCreature = creatures[Math.floor(Math.random() * creatures.length)];
+  openDetail(randomCreature.id);
+}
 
 function threatBadge(t) {
   if (t >= 90) return ['CRITICAL','threat-critical'];
