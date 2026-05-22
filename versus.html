@@ -320,15 +320,30 @@ function simulate() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
   })
-  .then(function(r){ return r.json(); })
+  .then(function(r){ 
+    console.log('HTTP status:', r.status);
+    return r.json(); 
+  })
   .then(function(data) {
+    console.log('Full response:', JSON.stringify(data));
     clearInterval(interval);
     document.getElementById('loading').style.display = 'none';
+    if (!data.content || !data.content[0] || !data.content[0].text) {
+      console.error('Bad response structure:', JSON.stringify(data));
+      showToast('SIMULATION FAILED — CHECK CONSOLE');
+      document.getElementById('sim-btn').disabled = false;
+      return;
+    }
     var text = data.content[0].text;
     var clean = text.replace(/```json|```/g,'').trim();
     var result = JSON.parse(clean);
     currentResult = result;
-    var winner = result.winner === c1.name ? c1 : c2;
+    // Flexible winner matching — case insensitive, partial match
+    var winnerName = result.winner || '';
+    var winner = c1;
+    if (winnerName.toLowerCase().includes(c2.name.toLowerCase()) || c2.name.toLowerCase().includes(winnerName.toLowerCase())) {
+      winner = c2;
+    }
     document.getElementById('winner-emoji').textContent = winner.emoji;
     document.getElementById('winner-name').textContent = result.winner.toUpperCase();
     document.getElementById('winner-sub').textContent = result.reason;
