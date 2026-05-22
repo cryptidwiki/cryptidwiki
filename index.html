@@ -386,7 +386,6 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
   <div class="nav-tabs-wrap">
     <button class="nav-tab active" id="tab-grid">GRID</button>
     <button class="nav-tab" id="tab-list">LIST</button>
-    <button class="nav-tab" id="tab-map">MAP</button>
     <button class="nav-tab" id="tab-rankings">RANKINGS</button>
     <button class="nav-tab live" id="tab-sightings" onclick="window.open('https://reported.live','_blank')">
       <div class="live-dot"></div>LIVE REPORTS
@@ -792,7 +791,6 @@ function closeDetail() {
 
 document.getElementById('tab-grid').addEventListener('click', function(){ showView('grid'); });
 document.getElementById('tab-list').addEventListener('click', function(){ showView('list'); });
-document.getElementById('tab-map').addEventListener('click', function(){ showView('map'); });
 document.getElementById('tab-rankings').addEventListener('click', function(){ showView('rankings'); });
 
 document.querySelectorAll('.pill').forEach(function(btn){
