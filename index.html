@@ -201,6 +201,7 @@ body::before { content: ''; position: fixed; inset: 0; background: repeating-lin
 .detail-close-btn { background: transparent; border: 1px solid var(--border2); color: var(--paper); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 4px 12px; cursor: pointer; transition: border-color 0.13s; }
 .detail-close-btn:hover { border-color: var(--red); color: var(--red); }
 .detail-banner { padding: 1.8rem 1.5rem 1.4rem; border-bottom: 1px solid var(--border); position: relative; }
+.detail-photo { width: 100%; max-height: 340px; object-fit: cover; object-position: top; display: block; border-bottom: 1px solid var(--border); }
 .detail-stamp { position: absolute; top: 1.4rem; right: 1.4rem; font-family: var(--display); font-size: 13px; letter-spacing: 0.22em; color: rgba(192,57,43,0.48); border: 3px solid rgba(192,57,43,0.38); padding: 3px 11px; transform: rotate(-12deg); }
 .detail-emoji { font-size: 52px; margin-bottom: 0.9rem; display: block; line-height: 1; }
 .detail-name { font-family: var(--display); font-size: 34px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 3px; line-height: 1.1; }
@@ -724,7 +725,8 @@ function openDetail(id) {
   var tb = threatBadge(c.threat);
   document.getElementById('detail-file-num').textContent = 'FILE #'+pad(c.id)+' — CLASSIFICATION: '+tb[0];
   document.getElementById('detail-content').innerHTML =
-    '<div class="detail-banner">'
+    (c.photo ? '<img class="detail-photo" src="'+c.photo+'" alt="'+c.name+'">' : '')
+    +'<div class="detail-banner">'
     +'<div class="detail-stamp">'+tb[0]+'</div>'
     +'<span class="detail-emoji">'+c.emoji+'</span>'
     +'<div class="detail-name">'+c.name+'</div>'
