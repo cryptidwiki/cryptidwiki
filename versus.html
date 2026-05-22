@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creature vs Creature — CryptidWiki Field Encounter Simulator</title>
+<meta name="description" content="Simulate encounters between any two cryptids, monsters, and paranormal entities. Who would win — Mothman vs Kraken? Wendigo vs Leviathan? Find out on CryptidWiki.">
+<link rel="canonical" href="https://cryptidwiki.com/versus">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #0d1220;
+  --bg3: #111829;
+  --bg4: #162035;
+  --gold: #f59e0b;
+  --gold2: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --red2: rgba(239,68,68,0.12);
+  --blue: #3b82f6;
+  --purple: #a855f7;
+  --green: #10b981;
+  --paper: #f1f5f9;
+  --paper2: rgba(241,245,249,0.65);
+  --paper3: rgba(241,245,249,0.35);
+  --border: rgba(241,245,249,0.08);
+  --border2: rgba(241,245,249,0.15);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--paper); font-family: var(--sans); min-height: 100vh; }
+
+/* HEADER */
+.site-header { background: var(--bg2); border-bottom: 1px solid var(--border2); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; position: sticky; top: 0; z-index: 100; }
+.logo { font-family: var(--serif); font-size: 22px; color: var(--paper); text-decoration: none; }
+.logo span { color: var(--gold); }
+.back-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; color: var(--paper3); text-decoration: none; padding: 5px 12px; border: 1px solid var(--border2); transition: all 0.12s; }
+.back-btn:hover { color: var(--paper); border-color: var(--border2); }
+.header-tag { margin-left: auto; font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--gold); background: var(--gold2); padding: 4px 10px; border: 1px solid rgba(245,158,11,0.2); }
+
+/* HERO */
+.hero { text-align: center; padding: 3rem 1.5rem 2rem; border-bottom: 1px solid var(--border); }
+.hero-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 0.75rem; }
+.hero-title { font-family: var(--serif); font-size: 48px; line-height: 1; margin-bottom: 0.5rem; }
+.hero-title span { color: var(--red); }
+.hero-sub { font-size: 13px; color: var(--paper3); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+/* MAIN */
+.main { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+/* ARENA */
+.arena { display: grid; grid-template-columns: 1fr 100px 1fr; gap: 1rem; margin-bottom: 1.5rem; align-items: start; }
+.slot { background: var(--bg2); border: 1px solid var(--border2); padding: 1.25rem; }
+.slot-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--paper3); margin-bottom: 0.75rem; }
+.slot-search { width: 100%; background: var(--bg3); border: 1px solid var(--border2); color: var(--paper); font-family: var(--sans); font-size: 12px; padding: 8px 10px; outline: none; margin-bottom: 0; transition: border-color 0.12s; }
+.slot-search:focus { border-color: var(--gold); }
+.slot-search::placeholder { color: var(--paper3); }
+.slot-dropdown { background: var(--bg3); border: 1px solid var(--border2); border-top: none; max-height: 200px; overflow-y: auto; display: none; scrollbar-width: thin; scrollbar-color: var(--border2) transparent; }
+.slot-option { padding: 8px 10px; font-size: 12px; cursor: pointer; color: var(--paper2); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); transition: all 0.1s; }
+.slot-option:hover { background: var(--gold2); color: var(--gold); }
+.slot-option:last-child { border-bottom: none; }
+.slot-empty { padding: 2.5rem 1rem; text-align: center; color: var(--paper3); font-size: 11px; letter-spacing: 0.1em; font-family: var(--mono); }
+.slot-creature { padding: 1rem 0 0; text-align: center; }
+.slot-creature-emoji { font-size: 52px; margin-bottom: 0.5rem; display: block; line-height: 1; }
+.slot-creature-name { font-family: var(--serif); font-size: 22px; margin-bottom: 2px; }
+.slot-creature-origin { font-size: 10px; color: var(--paper3); margin-bottom: 1rem; line-height: 1.4; }
+.slot-meter { margin-bottom: 6px; }
+.slot-meter-label { display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 0.1em; color: var(--paper3); margin-bottom: 3px; font-family: var(--mono); }
+.slot-meter-bar { height: 3px; background: var(--border2); }
+.slot-meter-fill { height: 3px; transition: width 0.6s ease; }
+.slot-clear { margin-top: 0.75rem; width: 100%; background: transparent; border: 1px solid var(--border); color: var(--paper3); font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; padding: 5px; cursor: pointer; transition: all 0.12s; }
+.slot-clear:hover { border-color: var(--red); color: var(--red); }
+
+/* VS DIVIDER */
+.vs-divider { display: flex; align-items: center; justify-content: center; padding-top: 3rem; }
+.vs-badge { font-family: var(--serif); font-size: 28px; color: var(--red); background: var(--red2); border: 1px solid rgba(239,68,68,0.3); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
+
+/* SIMULATE BTN */
+.simulate-wrap { text-align: center; margin-bottom: 2rem; }
+.simulate-btn { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.2em; padding: 14px 48px; background: var(--gold); border: none; color: #0a0e1a; cursor: pointer; transition: all 0.15s; }
+.simulate-btn:hover { background: #d97706; transform: translateY(-1px); }
+.simulate-btn:disabled { background: var(--border2); color: var(--paper3); cursor: not-allowed; transform: none; }
+.simulate-hint { font-size: 10px; color: var(--paper3); margin-top: 0.5rem; font-family: var(--mono); letter-spacing: 0.05em; }
+
+/* LOADING */
+.loading { text-align: center; padding: 3rem; display: none; }
+.loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem; }
+.loading-dot { width: 8px; height: 8px; background: var(--gold); animation: dotPulse 1.2s ease-in-out infinite; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse { 0%,80%,100%{opacity:0.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+.loading-text { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--paper3); }
+
+/* RESULT */
+.result { display: none; background: var(--bg2); border: 1px solid var(--border2); margin-bottom: 2rem; animation: resultIn 0.4s ease; }
+@keyframes resultIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+.result-header { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.result-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--gold); }
+.result-share { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--paper3); background: transparent; border: 1px solid var(--border2); padding: 4px 12px; cursor: pointer; transition: all 0.12s; }
+.result-share:hover { border-color: var(--gold); color: var(--gold); }
+.result-winner { padding: 2rem; text-align: center; border-bottom: 1px solid var(--border); background: linear-gradient(to bottom, rgba(245,158,11,0.06), transparent); }
+.result-winner-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em; color: var(--paper3); margin-bottom: 0.5rem; }
+.result-winner-emoji { font-size: 56px; display: block; margin-bottom: 0.5rem; line-height: 1; }
+.result-winner-name { font-family: var(--serif); font-size: 36px; color: var(--gold); margin-bottom: 0.25rem; }
+.result-winner-sub { font-size: 11px; color: var(--paper3); font-family: var(--mono); letter-spacing: 0.1em; }
+.result-narrative { padding: 1.5rem; }
+.result-narrative-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--paper3); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.result-narrative-text { font-size: 14px; line-height: 1.9; color: var(--paper2); }
+.result-again { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; }
+.result-again-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 8px 18px; background: transparent; border: 1px solid var(--border2); color: var(--paper2); cursor: pointer; transition: all 0.12s; }
+.result-again-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--gold); color: var(--gold); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 10px 24px; z-index: 2000; display: none; }
+.toast.show { display: block; animation: toastIn 0.2s ease; }
+@keyframes toastIn { from{opacity:0;transform:translateX(-50%) translateY(8px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
+
+/* FOOTER */
+.site-footer { border-top: 1px solid var(--border); padding: 1.25rem 1.5rem; text-align: center; font-size: 10px; color: var(--paper3); letter-spacing: 0.08em; font-family: var(--mono); }
+.site-footer a { color: var(--gold); text-decoration: none; }
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .arena { grid-template-columns: 1fr; }
+  .vs-divider { padding: 0.5rem 0; }
+  .vs-badge { width: 50px; height: 50px; font-size: 22px; }
+  .hero-title { font-size: 32px; }
+  .simulate-btn { padding: 12px 32px; font-size: 11px; }
+  .result-winner-name { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">Cryptid<span>Wiki</span></a>
+  <a href="/" class="back-btn">← BACK TO DATABASE</a>
+  <div class="header-tag">⚡ ENCOUNTER SIMULATOR</div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">// CRYPTIDWIKI FIELD ENCOUNTER SIMULATOR //</div>
+  <div class="hero-title">CREATURE <span>VS</span> CREATURE</div>
+  <p class="hero-sub">Select any two entities from the database. The simulator analyzes their documented abilities, threat ratings, and lore to generate a unique encounter narrative.</p>
+</div>
+
+<div class="main">
+  <div class="arena">
+    <!-- SLOT 1 -->
+    <div class="slot">
+      <div class="slot-label">// ENTITY ONE //</div>
+      <input class="slot-search" id="search1" placeholder="Search creature..." autocomplete="off"
+        oninput="filterCreatures(1)" onfocus="showDrop(1)" onblur="hideDrop(1)">
+      <div class="slot-dropdown" id="drop1"></div>
+      <div id="display1"><div class="slot-empty">SELECT A CREATURE TO BEGIN</div></div>
+    </div>
+
+    <div class="vs-divider">
+      <div class="vs-badge">VS</div>
+    </div>
+
+    <!-- SLOT 2 -->
+    <div class="slot">
+      <div class="slot-label">// ENTITY TWO //</div>
+      <input class="slot-search" id="search2" placeholder="Search creature..." autocomplete="off"
+        oninput="filterCreatures(2)" onfocus="showDrop(2)" onblur="hideDrop(2)">
+      <div class="slot-dropdown" id="drop2"></div>
+      <div id="display2"><div class="slot-empty">SELECT A CREATURE TO BEGIN</div></div>
+    </div>
+  </div>
+
+  <div class="simulate-wrap">
+    <button class="simulate-btn" id="sim-btn" onclick="simulate()" disabled>⚡ SIMULATE ENCOUNTER</button>
+    <div class="simulate-hint">Each simulation generates a unique narrative — run it again for a different outcome</div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+    <div class="loading-text" id="loading-text">ANALYZING THREAT DATA...</div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-header">
+      <span class="result-tag">// ENCOUNTER RESULT //</span>
+      <button class="result-share" onclick="shareResult()">🔗 SHARE RESULT</button>
+    </div>
+    <div class="result-winner">
+      <div class="result-winner-label">VICTOR</div>
+      <span class="result-winner-emoji" id="winner-emoji"></span>
+      <div class="result-winner-name" id="winner-name"></div>
+      <div class="result-winner-sub" id="winner-sub"></div>
+    </div>
+    <div class="result-narrative">
+      <div class="result-narrative-label">// FIELD ENCOUNTER REPORT //</div>
+      <div class="result-narrative-text" id="narrative"></div>
+    </div>
+    <div class="result-again">
+      <button class="result-again-btn" onclick="simulate()">⚡ RUN AGAIN</button>
+      <button class="result-again-btn" onclick="resetAll()">↺ NEW MATCHUP</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <a href="/">CRYPTIDWIKI.COM</a> — PARANORMAL ENTITY DATABASE — ENCOUNTER SIMULATOR POWERED BY CLAUDE AI
+</footer>
+
+<script src="creatures.js"></script>
+<script>
+var WORKER_URL = 'https://cryptidwiki-api.dakotadennison.workers.dev';
+var selected = [null, null];
+var currentResult = null;
+
+var loadingMsgs = [
+  'ANALYZING THREAT DATA...',
+  'CALCULATING ABILITY MATCHUPS...',
+  'SIMULATING ENCOUNTER CONDITIONS...',
+  'CONSULTING THE FIELD DATABASE...',
+  'ASSESSING ENVIRONMENTAL FACTORS...',
+  'DETERMINING PROBABLE OUTCOME...',
+  'COMPILING ENCOUNTER REPORT...'
+];
+
+function threatColor(t) {
+  if (t >= 90) return '#ef4444';
+  if (t >= 70) return '#f59e0b';
+  if (t >= 50) return '#3b82f6';
+  return '#10b981';
+}
+
+function renderDisplay(slot) {
+  var c = selected[slot-1];
+  var el = document.getElementById('display'+slot);
+  if (!c) { el.innerHTML = '<div class="slot-empty">SELECT A CREATURE TO BEGIN</div>'; return; }
+  el.innerHTML = '<div class="slot-creature">'
+    +'<span class="slot-creature-emoji">'+c.emoji+'</span>'
+    +'<div class="slot-creature-name">'+c.name+'</div>'
+    +'<div class="slot-creature-origin">'+c.origin+'</div>'
+    +'<div class="slot-meter"><div class="slot-meter-label"><span>THREAT</span><span>'+c.threat+'/100</span></div>'
+    +'<div class="slot-meter-bar"><div class="slot-meter-fill" style="width:'+c.threat+'%;background:'+threatColor(c.threat)+'"></div></div></div>'
+    +'<div class="slot-meter"><div class="slot-meter-label"><span>RARITY</span><span>'+c.rarity+'/100</span></div>'
+    +'<div class="slot-meter-bar"><div class="slot-meter-fill" style="width:'+c.rarity+'%;background:#a855f7"></div></div></div>'
+    +'<button class="slot-clear" onclick="clearSlot('+slot+')">✕ CLEAR</button>'
+    +'</div>';
+  checkBtn();
+}
+
+function filterCreatures(slot) {
+  var q = document.getElementById('search'+slot).value.toLowerCase();
+  var drop = document.getElementById('drop'+slot);
+  var list = creatures.filter(function(c){ return c.name.toLowerCase().includes(q) || (c.aka && c.aka.toLowerCase().includes(q)); });
+  drop.innerHTML = list.slice(0,10).map(function(c){
+    return '<div class="slot-option" onmousedown="selectCreature('+slot+','+c.id+')">'+c.emoji+' <span>'+c.name+'</span></div>';
+  }).join('');
+  drop.style.display = list.length ? 'block' : 'none';
+}
+
+function showDrop(slot) { filterCreatures(slot); }
+function hideDrop(slot) { setTimeout(function(){ document.getElementById('drop'+slot).style.display='none'; }, 150); }
+
+function selectCreature(slot, id) {
+  var c = null;
+  for (var i=0;i<creatures.length;i++){ if(creatures[i].id===id){ c=creatures[i]; break; } }
+  if (!c) return;
+  selected[slot-1] = c;
+  document.getElementById('search'+slot).value = '';
+  document.getElementById('drop'+slot).style.display = 'none';
+  renderDisplay(slot);
+}
+
+function clearSlot(slot) {
+  selected[slot-1] = null;
+  document.getElementById('search'+slot).value = '';
+  renderDisplay(slot);
+  document.getElementById('result').style.display = 'none';
+  checkBtn();
+}
+
+function checkBtn() {
+  document.getElementById('sim-btn').disabled = !(selected[0] && selected[1]);
+}
+
+function resetAll() {
+  selected = [null, null];
+  renderDisplay(1); renderDisplay(2);
+  document.getElementById('search1').value = '';
+  document.getElementById('search2').value = '';
+  document.getElementById('result').style.display = 'none';
+  checkBtn();
+}
+
+function simulate() {
+  var c1 = selected[0], c2 = selected[1];
+  if (!c1 || !c2) return;
+  if (c1.id === c2.id) { showToast('SELECT TWO DIFFERENT CREATURES'); return; }
+
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('sim-btn').disabled = true;
+
+  var i = 0;
+  var interval = setInterval(function(){
+    document.getElementById('loading-text').textContent = loadingMsgs[i % loadingMsgs.length];
+    i++;
+  }, 700);
+
+  var prompt = 'You are the CryptidWiki Field Encounter Simulator — a dramatic paranormal field analyst. Two supernatural entities are about to clash in a life-or-death encounter.\n\nCREATURE 1: ' + c1.name + '\nOrigin: ' + c1.origin + '\nThreat Level: ' + c1.threat + '/100\nType: ' + c1.type + '\nAbilities: ' + (c1.abilities||[]).join(', ') + '\nLore: ' + (c1.lore||'').substring(0,300) + '\n\nCREATURE 2: ' + c2.name + '\nOrigin: ' + c2.origin + '\nThreat Level: ' + c2.threat + '/100\nType: ' + c2.type + '\nAbilities: ' + (c2.abilities||[]).join(', ') + '\nLore: ' + (c2.lore||'').substring(0,300) + '\n\nWrite a dramatic 200-250 word encounter narrative with buildup, escalation, and a decisive conclusion. Reference specific abilities from both creatures. Make it feel like a field report from a paranormal investigator who witnessed the encounter. Then declare a winner with a one-sentence explanation of why they won.\n\nRespond ONLY in this exact JSON format:\n{"winner":"exact creature name","reason":"one sentence why they won","narrative":"200-250 word dramatic narrative"}';
+
+  fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    clearInterval(interval);
+    document.getElementById('loading').style.display = 'none';
+    var text = data.content[0].text;
+    var clean = text.replace(/```json|```/g,'').trim();
+    var result = JSON.parse(clean);
+    currentResult = result;
+    var winner = result.winner === c1.name ? c1 : c2;
+    document.getElementById('winner-emoji').textContent = winner.emoji;
+    document.getElementById('winner-name').textContent = result.winner.toUpperCase();
+    document.getElementById('winner-sub').textContent = result.reason;
+    document.getElementById('narrative').textContent = result.narrative;
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('sim-btn').disabled = false;
+  })
+  .catch(function(err) {
+    clearInterval(interval);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('sim-btn').disabled = false;
+    showToast('SIMULATION FAILED — TRY AGAIN');
+    console.error(err);
+  });
+}
+
+function shareResult() {
+  if (!selected[0] || !selected[1] || !currentResult) return;
+  var text = 'CryptidWiki Battle: ' + selected[0].name + ' vs ' + selected[1].name + ' — Winner: ' + currentResult.winner + '. ' + currentResult.reason + ' | cryptidwiki.com/versus';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){ showToast('🔗 RESULT COPIED TO CLIPBOARD'); });
+  }
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+</script>
+</body>
+</html>
